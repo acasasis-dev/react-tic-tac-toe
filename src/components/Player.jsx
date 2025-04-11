@@ -6,7 +6,7 @@ export default function Player({ name, symbol }) {
 	const [ playerName, setPlayerName ] = useState(name)
 
 	function handleClick() {
-		setIsEditing(!isEditing)
+		setIsEditing((editing) => !editing);
 	}
 
 	function handleChange(e) {
@@ -17,7 +17,7 @@ export default function Player({ name, symbol }) {
 		<li>
 			<span className="player">
 				{ isEditing? 
-					<input type="text" onChange={ handleChange }/>:
+					<input type="text" onChange={ handleChange } value={ playerName } /> :
 					<span className="player-name">{ playerName }</span>
 				}
 				<span className="player-symbol">{ symbol }</span>
