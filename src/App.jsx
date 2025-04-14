@@ -36,6 +36,22 @@ function App() {
 		gameState[row][col] = player;
 	}
 
+  let winner;
+
+  for(const combination of WINNING_COMBINATIONS) {
+    const currentCheck = [];
+    for(const c of combination) {
+      const { row, column: col } = c;
+      currentCheck.push(gameState[row][col]) 
+    }
+
+    const currentCheckSet = [...new Set(currentCheck)];
+
+    if(currentCheckSet.length === 1 && currentCheckSet[0] !== null) {
+      winner = currentCheckSet[0];
+    }
+  }
+
   function handleSelectSquare(rowIndex, colIndex) {
     setGameTurns(prevGameTurns => {
       const currentPlayer = deriveAcivePlayer(prevGameTurns);
@@ -56,6 +72,7 @@ function App() {
           <Player name="Player 1" symbol="X" isActive={ activePlayer === 'X' } />
           <Player name="Player 2" symbol="O" isActive={ activePlayer === 'O' } />
         </ol>
+        {winner && <p>{ winner } WON THE GAME!!!</p>}
         <GameBoard 
           onSelectSquare={ handleSelectSquare }
           board={ gameState }
