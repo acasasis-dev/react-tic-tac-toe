@@ -24,6 +24,10 @@ function deriveAcivePlayer(gameTurns) {
 }
 
 function App() {
+  const [ playerNames, setPlayerNames ] = useState({
+    'X': 'Player 1',
+    'O': 'Player 2'
+  });
   const [ gameTurns, setGameTurns ] = useState([]);
 
   const activePlayer = deriveAcivePlayer(gameTurns);
@@ -49,7 +53,7 @@ function App() {
     const currentCheckSet = [...new Set(currentCheck)];
 
     if(currentCheckSet.length === 1 && currentCheckSet[0] !== null) {
-      winner = currentCheckSet[0];
+      winner = playerNames[currentCheckSet[0]];
     }
   }
 
@@ -72,12 +76,21 @@ function App() {
     setGameTurns([]);
   }
 
+  function handlePlayerRename(symbol, newName) {
+    setPlayerNames(prevPlayerNames => {
+      return {
+        ...prevPlayerNames,
+        [symbol]: newName
+      };
+    });
+  }
+
   return (
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player name="Player 1" symbol="X" isActive={ activePlayer === 'X' } />
-          <Player name="Player 2" symbol="O" isActive={ activePlayer === 'O' } />
+          <Player name="Player 1" symbol="X" isActive={ activePlayer === 'X' } onRename={ handlePlayerRename } />
+          <Player name="Player 2" symbol="O" isActive={ activePlayer === 'O' } onRename={ handlePlayerRename } />
         </ol>
         { (winner || isDraw ) && <GameOver winner={ winner } onSelectRematch={ handleRematch} /> }
         <GameBoard 
